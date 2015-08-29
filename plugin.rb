@@ -1,7 +1,6 @@
-# name: checklist
-# about: checklist support for Discourse
-# version: 0.1
-# authors: Benjamin Kampmann
+# name: volunteer-boxes
+# version: 2
+# authors: root
 
 register_asset 'javascripts/checklist.js.erb', :server_side
 register_asset "javascripts/checklist_ui.js"
