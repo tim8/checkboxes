@@ -4,18 +4,20 @@ import Post from 'discourse/models/post';
 export default {
   name: 'checklist',
   initialize: function(container) {
+    const siteSettings = container.lookup('site-settings:main');
+
+    if (siteSettings.checklist_enabled) {
       PostView.reopen({
         createChecklistUI: function($post) {
           if (!this.get('post.can_edit')) { return };
 
           var boxes = $post.find(".chcklst-box"),
             viewPost = this.get('post');
-            user = Discourse.User.currentProp('username');
 
           boxes.each(function(idx, val) {
             $(val).click(function(ev) {
               var elem = $(ev.currentTarget),
-                new_value = elem.hasClass("checked") ? "[ ] #VolunteerNeeded": "[*] @" + user;
+                new_value = elem.hasClass("checked") ? "[ ]": "[*]";
 
               elem.after('<i class="fa fa-spinner fa-spin"></i>');
               elem.hide();
@@ -30,7 +32,7 @@ export default {
 
                 var props = {
                   raw: new_raw,
-                  edit_reason: 'volunteered',
+                  edit_reason: 'checklist change',
                   cooked: Discourse.Markdown.cook(new_raw)
                 };
                 viewPost.save(props);
@@ -45,5 +47,6 @@ export default {
         destroyChecklistUI: function() {
         }.on('willClearRender')
       });
+    }
   }
 };
