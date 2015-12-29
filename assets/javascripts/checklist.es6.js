@@ -1,9 +1,6 @@
 import PostView from "discourse/views/post";
 import Post from 'discourse/models/post';
 
-export default {
-  name: 'checklist',
-  initialize: function(container) {
       PostView.reopen({
         createChecklistUI: function($post) {
           if (!this.get('post.can_edit')) { return };
@@ -44,5 +41,4 @@ export default {
         destroyChecklistUI: function() {
         }.on('willClearRender')
       });
-  }
 };
