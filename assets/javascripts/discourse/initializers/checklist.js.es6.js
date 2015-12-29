@@ -8,7 +8,7 @@ PostView.reopen({
     var boxes = $post.find(".chcklst-box"),
       viewPost = this.get('post'),
       user = Discourse.User.currentProp('username');
-      console.log(user);
+      console.log(viewPost);
 
     boxes.each(function(idx, val) {
       $(val).click(function(ev) {
@@ -21,7 +21,7 @@ PostView.reopen({
         var postId = viewPost.get('id');
         Discourse.ajax("/posts/" + postId, { type: 'GET', cache: false }).then(function(result) {
           var nth = -1, // make the first run go to index = 0
-            new_raw = result.raw.replace(/\[([\ \_\-\x\*]?)\]/g, function(match, args, offset) {
+            new_raw = result.raw.replace(/(\[([\ \_\-\x\*]?)\])(\s((@|#)\w+))?/g, function(match, args, offset) {
               nth += 1;
               return nth == idx ? new_value : match;
             });
