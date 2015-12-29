@@ -1,14 +1,14 @@
 import PostView from "discourse/views/post";
 import Post from 'discourse/models/post';
+var user = Discourse.User.currentProp('username');
+console.log(viewPost);
 
 PostView.reopen({
   createChecklistUI: function($post) {
     if (!this.get('post.can_edit')) { return };
 
     var boxes = $post.find(".chcklst-box"),
-      viewPost = this.get('post'),
-      user = Discourse.User.currentProp('username');
-      console.log(viewPost);
+      viewPost = this.get('post');
 
     boxes.each(function(idx, val) {
       $(val).click(function(ev) {
