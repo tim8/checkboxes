@@ -9,12 +9,14 @@ export default {
           if (!this.get('post.can_edit')) { return };
 
           var boxes = $post.find(".chcklst-box"),
-            viewPost = this.get('post');
+            viewPost = this.get('post'),
+            user = Discourse.User.currentProp('username');
+            console.log(user);
 
           boxes.each(function(idx, val) {
             $(val).click(function(ev) {
               var elem = $(ev.currentTarget),
-                new_value = elem.hasClass("checked") ? "[ ]": "[*]";
+                new_value = elem.hasClass("checked") ? "[ ] #VolunteerNeeded": "[*] @" + user;
 
               elem.after('<i class="fa fa-spinner fa-spin"></i>');
               elem.hide();
@@ -29,7 +31,7 @@ export default {
 
                 var props = {
                   raw: new_raw,
-                  edit_reason: 'checklist change',
+                  edit_reason: 'volunteered',
                   cooked: Discourse.Markdown.cook(new_raw)
                 };
                 viewPost.save(props);
