@@ -2,16 +2,14 @@ import PostView from "discourse/views/post";
 import Post from 'discourse/models/post';
 
 export default {
-  name: 'checklist',
-  initialize: function(container) {
       PostView.reopen({
         createChecklistUI: function($post) {
-                      user = Discourse.User.currentProp('username');
-            console.log(user);
           if (!this.get('post.can_edit')) { return };
 
           var boxes = $post.find(".chcklst-box"),
-            viewPost = this.get('post');
+            viewPost = this.get('post'),
+            user = Discourse.User.currentProp('username');
+            console.log(user);
 
           boxes.each(function(idx, val) {
             $(val).click(function(ev) {
@@ -46,5 +44,4 @@ export default {
         destroyChecklistUI: function() {
         }.on('willClearRender')
       });
-  }
 };
