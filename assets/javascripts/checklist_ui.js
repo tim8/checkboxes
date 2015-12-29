@@ -15,7 +15,7 @@ export default {
           boxes.each(function(idx, val) {
             $(val).click(function(ev) {
               var elem = $(ev.currentTarget),
-                new_value = elem.hasClass("checked") ? "[ ] #VolunteerNeeded": "[*] @" + user,
+                new_value = elem.hasClass("checked") ? "[ ] #VolunteerNeeded": "[*] @" + user;
 
               elem.after('<i class="fa fa-spinner fa-spin"></i>');
               elem.hide();
