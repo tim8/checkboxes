@@ -2,8 +2,7 @@
 # version: 2
 # authors: root
 
-register_asset 'javascripts/checklist.js.erb', :server_side
-register_asset "javascripts/checklist_ui.js"
+register_asset "javascripts/discourse/checklist_ui.js" :server_side
 
 register_css <<CSS
 
