@@ -1,7 +1,5 @@
 import PostView from "discourse/views/post";
 import Post from 'discourse/models/post';
-var user = Discourse.User.currentProp('username');
-console.log(viewPost);
 
 PostView.reopen({
   createChecklistUI: function($post) {
@@ -13,7 +11,7 @@ PostView.reopen({
     boxes.each(function(idx, val) {
       $(val).click(function(ev) {
         var elem = $(ev.currentTarget),
-          new_value = elem.hasClass("checked") ? "[ ] #VolunteerNeeded": "[*] @" + user;
+          new_value = elem.hasClass("checked") ? "[ ] #VolunteerNeeded": "[*] @";
 
         elem.after('<i class="fa fa-spinner fa-spin"></i>');
         elem.hide();
