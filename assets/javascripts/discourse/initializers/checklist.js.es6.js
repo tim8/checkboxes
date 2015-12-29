@@ -6,12 +6,12 @@ export default {
   initialize: function(container) {
       PostView.reopen({
         createChecklistUI: function($post) {
+                      user = Discourse.User.currentProp('username');
+            console.log(user);
           if (!this.get('post.can_edit')) { return };
 
           var boxes = $post.find(".chcklst-box"),
-            viewPost = this.get('post'),
-            user = Discourse.User.currentProp('username');
-            console.log(user);
+            viewPost = this.get('post');
 
           boxes.each(function(idx, val) {
             $(val).click(function(ev) {
