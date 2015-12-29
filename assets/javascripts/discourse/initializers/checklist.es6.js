@@ -1,6 +1,6 @@
 import PostView from "discourse/views/post";
 import Post from 'discourse/models/post';
-var prop = require('discourse/controllers/user').default,
+var prop = require('discourse/models/user').default,
     user = prop.currentProp('username');
     console.log(user);
 
