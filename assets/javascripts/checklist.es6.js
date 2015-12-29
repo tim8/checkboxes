@@ -1,5 +1,5 @@
-import PostView from "discourse/views/post";
-import Post from 'discourse/models/post';
+var PostView = require('discourse/views/post').default,
+    Post = require('discourse/models/post').default;
 
 PostView.reopen({
   createChecklistUI: function($post) {
