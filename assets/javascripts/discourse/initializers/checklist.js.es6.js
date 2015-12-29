@@ -4,9 +4,6 @@ import Post from 'discourse/models/post';
 export default {
   name: 'checklist',
   initialize: function(container) {
-    const siteSettings = container.lookup('site-settings:main');
-
-    if (siteSettings.checklist_enabled) {
       PostView.reopen({
         createChecklistUI: function($post) {
           if (!this.get('post.can_edit')) { return };
@@ -47,6 +44,5 @@ export default {
         destroyChecklistUI: function() {
         }.on('willClearRender')
       });
-    }
   }
 };
