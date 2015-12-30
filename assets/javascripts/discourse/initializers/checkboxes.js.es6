@@ -6,7 +6,6 @@ export default {
   name: 'checkboxes',
   initialize: function(container) {
       var user = User.currentProp("username");
-      console.log('user');
       PostView.reopen({
         createChecklistUI: function($post) {
           if (!this.get('post.can_edit')) { return };
@@ -17,7 +16,7 @@ export default {
           boxes.each(function(idx, val) {
             $(val).click(function(ev) {
               var elem = $(ev.currentTarget),
-                new_value = elem.hasClass("checked") ? "[ ] #VolunteerNeeded": "[*] @";
+                new_value = elem.hasClass("checked") ? "[ ] #VolunteerNeeded": "[*] @" + user;
 
               elem.after('<i class="fa fa-spinner fa-spin"></i>');
               elem.hide();
