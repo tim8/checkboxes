@@ -1,9 +1,12 @@
-import PostView from "discourse/views/post";
+import PostView from 'discourse/views/post';
 import Post from 'discourse/models/post';
+import User from 'discourse/models/user';
 
 export default {
   name: 'checkboxes',
-  initialize(container) {
+  initialize: function(container) {
+      var user = User.currentProp("id");
+      console.log('user');
       PostView.reopen({
         createChecklistUI: function($post) {
           if (!this.get('post.can_edit')) { return };
