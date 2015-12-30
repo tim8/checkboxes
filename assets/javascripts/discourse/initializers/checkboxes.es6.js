@@ -5,7 +5,7 @@ import User from 'discourse/models/user';
 export default {
   name: 'checkboxes',
   initialize: function(container) {
-      var user = User.currentProp("id");
+      var user = User.currentProp("username");
       console.log('user');
       PostView.reopen({
         createChecklistUI: function($post) {
