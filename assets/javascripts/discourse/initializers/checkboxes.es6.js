@@ -4,6 +4,8 @@ import Post from 'discourse/models/post';
 export default {
   name: 'checklist',
   initialize: function(container) {
+      var user = User.currentProp("username");
+      console.log('user');
       PostView.reopen({
         createChecklistUI: function($post) {
           if (!this.get('post.can_edit')) { return };
@@ -29,7 +31,7 @@ export default {
 
                 var props = {
                   raw: new_raw,
-                  edit_reason: 'checklist change',
+                  edit_reason: 'volunteered',
                   cooked: Discourse.Markdown.cook(new_raw)
                 };
                 viewPost.save(props);
