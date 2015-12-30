@@ -5,13 +5,14 @@ import User from 'discourse/models/user';
 export default {
   name: 'checkboxes',
   initialize: function(container) {
-      var user = User.currentProp("username");
       PostView.reopen({
         createChecklistUI: function($post) {
           if (!this.get('post.can_edit')) { return };
 
+
           var boxes = $post.find(".chcklst-box"),
-            viewPost = this.get('post');
+              viewPost = this.get('post'),
+              user = User.currentProp("username");
 
           boxes.each(function(idx, val) {
             $(val).click(function(ev) {
