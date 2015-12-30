@@ -1,12 +1,9 @@
-import PostView from 'discourse/views/post';
+import PostView from "discourse/views/post";
 import Post from 'discourse/models/post';
-import User from 'discourse/models/user';
 
 export default {
-  name: 'checkboxes',
+  name: 'checklist',
   initialize: function(container) {
-      var user = User.currentProp("username");
-      console.log('user');
       PostView.reopen({
         createChecklistUI: function($post) {
           if (!this.get('post.can_edit')) { return };
@@ -17,7 +14,7 @@ export default {
           boxes.each(function(idx, val) {
             $(val).click(function(ev) {
               var elem = $(ev.currentTarget),
-                new_value = elem.hasClass("checked") ? "[ ] #VolunteerNeeded": "[*] @";
+                new_value = elem.hasClass("checked") ? "[ ]": "[*]";
 
               elem.after('<i class="fa fa-spinner fa-spin"></i>');
               elem.hide();
@@ -25,14 +22,14 @@ export default {
               var postId = viewPost.get('id');
               Discourse.ajax("/posts/" + postId, { type: 'GET', cache: false }).then(function(result) {
                 var nth = -1, // make the first run go to index = 0
-                  new_raw = result.raw.replace(/(\[([\ \_\-\x\*]?)\])(\s((@|#)\w+))?/g, function(match, args, offset) {
+                  new_raw = result.raw.replace(/\[([\ \_\-\x\*]?)\]/g, function(match, args, offset) {
                     nth += 1;
                     return nth == idx ? new_value : match;
                   });
 
                 var props = {
                   raw: new_raw,
-                  edit_reason: 'volunteered',
+                  edit_reason: 'checklist change',
                   cooked: Discourse.Markdown.cook(new_raw)
                 };
                 viewPost.save(props);
