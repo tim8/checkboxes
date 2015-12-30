@@ -2,8 +2,8 @@ import PostView from "discourse/views/post";
 import Post from 'discourse/models/post';
 
 export default {
-  name: 'volunteer-boxes',
-  initialize: function(container) {
+  name: 'checkboxes',
+  initialize(container) {
       PostView.reopen({
         createChecklistUI: function($post) {
           if (!this.get('post.can_edit')) { return };
