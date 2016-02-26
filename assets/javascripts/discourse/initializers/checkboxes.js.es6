@@ -68,7 +68,8 @@ export default function checklistSyntax($elem, post)
     {
       $(val).click(function(ev)
       {
-        var elem = $(ev.currentTarget);
+        var elem = $(ev.currentTarget),
+            user = User.currentProp("username");
 
         if(elem.hasClass("checked"))
         {
@@ -76,9 +77,7 @@ export default function checklistSyntax($elem, post)
           if (remove == false) { return; }
         }else if(event.altKey)
         {
-          var user = prompt("Enter a valid username");
-        }else{
-          var user = User.currentProp("username");
+          var user = prompt("Enter a valid username",user);
         }
         
         var new_value = elem.hasClass("checked") ? "[ ] #VolunteerNeeded": "[*] @" + user;
