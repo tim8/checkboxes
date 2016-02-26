@@ -14,12 +14,13 @@ function priorToApi(container)
 
       boxes.each(function(idx, val)
       {
-        $(val).click(function(ev)
+        $(val).click(function(event)
         {
-         var elem = $(ev.currentTarget),
+         var elem = $(event.currentTarget),
               user = User.currentProp("username");
 
-          if(ev.altKey)
+          event = event || window.event //For IE
+          if(event.altKey)
           {
             var user = prompt("Enter a valid username",user);
             if (user == false) { return; }
