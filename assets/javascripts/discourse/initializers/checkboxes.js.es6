@@ -69,6 +69,11 @@ export default function checklistSyntax($elem, post)
     {
       $(val).click(function(ev)
       {
+        if(elem.hasClass("checked"))
+        {
+          var = remove confirm("Are you sure you want to un-volunteer?");
+          if (remove == false) { return; }
+        }
         var elem = $(ev.currentTarget),
           new_value = elem.hasClass("checked") ? "[ ] #VolunteerNeeded": "[*] @" + user;
 
