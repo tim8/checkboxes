@@ -14,13 +14,12 @@ function priorToApi(container)
 
       boxes.each(function(idx, val)
       {
-        $(val).click(function(event)
+        $(val).click(function(ev)
         {
-         var elem = $(event.currentTarget),
+          var elem = $(ev.currentTarget),
               user = User.currentProp("username");
-
-          event = event || window.event //For IE
-          if(event.altKey)
+           
+          if(ev.altKey)
           {
             var user = prompt("Enter a valid username",user);
             if (user == false) { return; }
@@ -87,7 +86,7 @@ export default function checklistSyntax($elem, post)
         var elem = $(ev.currentTarget),
             user = User.currentProp("username");
 
-        if(event.altKey)
+        if(ev.altKey)
         {
           var user = prompt("Enter a valid username",user);
           if (user == false) { return; }
