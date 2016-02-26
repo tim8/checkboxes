@@ -78,7 +78,7 @@ export default function checklistSyntax($elem, post)
           if (remove == false) { return; }
         }else if(event.altKey)
         {
-          user = prompt("Enter a valid username");
+          var user = prompt("Enter a valid username");
         }
 
         elem.after('<i class="fa fa-spinner fa-spin"></i>');
