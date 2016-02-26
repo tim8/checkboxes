@@ -10,25 +10,35 @@ function priorToApi(container)
       if (!this.get('post.can_edit')) { return };
       
       var boxes = $post.find(".chcklst-box"),
-          viewPost = this.get('post');
+          viewPost = this.get('post'),
+          user = User.currentProp("username");
 
       boxes.each(function(idx, val)
       {
         $(val).click(function(ev)
         {
-          var elem = $(ev.currentTarget),
-              user = User.currentProp("username");
+          var elem = $(ev.currentTarget);
 
-          if(elem.hasClass("checked"))
+          if(event.altKey)
           {
-            var remove =  confirm("Are you sure you want to un-volunteer?");
-            if (remove == false) { return; }
-          }else if(event.altKey)
-          {
-            var user = prompt("Enter a valid username",user);
+            var alt_user = prompt("Enter a valid username",user);
+            if (alt_user == false) 
+            { return; }
+            else
+            {
+              var new_value = "[*] @" + alt_user;
+              delete alt_user;
+            }
           }
-          
-          var new_value = elem.hasClass("checked") ? "[ ] #VolunteerNeeded": "[*] @" + user;
+          else
+          {
+            if(elem.hasClass("checked"))
+            {
+              var remove =  confirm("Are you sure you want to un-volunteer?");
+              if (remove == false) { return; }
+            }
+            var new_value = elem.hasClass("checked") ? "[ ] #VolunteerNeeded": "[*] @" + user;
+          }
 
           elem.after('<i class="fa fa-spinner fa-spin"></i>');
           elem.hide();
@@ -83,11 +93,14 @@ export default function checklistSyntax($elem, post)
 
         if(event.altKey)
         {
-          var prompt = prompt("Enter a valid username",user);
-          if (prompt == false) 
+          var alt_user = prompt("Enter a valid username",user);
+          if (alt_user == false) 
           { return; }
           else
-          { var new_value = "[*] @" + prompt; }
+          {
+            var new_value = "[*] @" + alt_user;
+            delete alt_user;
+          }
         }
         else
         {
