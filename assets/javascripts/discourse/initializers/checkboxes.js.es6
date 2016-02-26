@@ -10,15 +10,25 @@ function priorToApi(container)
       if (!this.get('post.can_edit')) { return };
       
       var boxes = $post.find(".chcklst-box"),
-          viewPost = this.get('post'),
-          user = User.currentProp("username");
+          viewPost = this.get('post');
 
       boxes.each(function(idx, val)
       {
         $(val).click(function(ev)
         {
           var elem = $(ev.currentTarget),
-            new_value = elem.hasClass("checked") ? "[ ] #VolunteerNeeded": "[*] @" + user;
+              user = User.currentProp("username");
+
+          if(elem.hasClass("checked"))
+          {
+            var remove =  confirm("Are you sure you want to un-volunteer?");
+            if (remove == false) { return; }
+          }else if(event.altKey)
+          {
+            var user = prompt("Enter a valid username",user);
+          }
+          
+          var new_value = elem.hasClass("checked") ? "[ ] #VolunteerNeeded": "[*] @" + user;
 
           elem.after('<i class="fa fa-spinner fa-spin"></i>');
           elem.hide();
