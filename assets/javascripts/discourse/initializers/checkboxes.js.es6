@@ -10,25 +10,20 @@ function priorToApi(container)
       if (!this.get('post.can_edit')) { return };
       
       var boxes = $post.find(".chcklst-box"),
-          viewPost = this.get('post'),
-          user = User.currentProp("username");
+          viewPost = this.get('post');
 
       boxes.each(function(idx, val)
       {
         $(val).click(function(ev)
         {
-          var elem = $(ev.currentTarget);
+         var elem = $(ev.currentTarget),
+              user = User.currentProp("username");
 
           if(event.altKey)
           {
-            var alt_user = prompt("Enter a valid username",user);
-            if (alt_user == false) 
-            { return; }
-            else
-            {
-              var new_value = "[*] @" + alt_user;
-              delete alt_user;
-            }
+            var user = prompt("Enter a valid username",user);
+            if (user == false) { return; }
+            var new_value = "[*] @" + user;
           }
           else
           {
@@ -80,8 +75,7 @@ export default function checklistSyntax($elem, post)
 {
 
   var boxes = $elem.find(".chcklst-box"),
-      viewPost = post.getModel(),
-      user = User.currentProp("username");
+      viewPost = post.getModel();
 
   if (!viewPost.can_edit) { return; }
 
@@ -89,18 +83,14 @@ export default function checklistSyntax($elem, post)
     {
       $(val).click(function(ev)
       {
-        var elem = $(ev.currentTarget);
+        var elem = $(ev.currentTarget),
+            user = User.currentProp("username");
 
         if(event.altKey)
         {
-          var alt_user = prompt("Enter a valid username",user);
-          if (alt_user == false) 
-          { return; }
-          else
-          {
-            var new_value = "[*] @" + alt_user;
-            delete alt_user;
-          }
+          var user = prompt("Enter a valid username",user);
+          if (user == false) { return; }
+          var new_value = "[*] @" + user;
         }
         else
         {
