@@ -71,7 +71,7 @@ export default function checklistSyntax($elem, post)
       {
         if(elem.hasClass("checked"))
         {
-          var = remove confirm("Are you sure you want to un-volunteer?");
+          var remove =  confirm("Are you sure you want to un-volunteer?");
           if (remove == false) { return; }
         }
         var elem = $(ev.currentTarget),
