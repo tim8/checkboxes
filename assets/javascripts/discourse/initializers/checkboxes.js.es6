@@ -70,7 +70,8 @@ export default function checklistSyntax($elem, post)
 {
 
   var boxes = $elem.find(".chcklst-box"),
-      viewPost = post.getModel();
+      viewPost = post.getModel(),
+      user = User.currentProp("username");
 
   if (!viewPost.can_edit) { return; }
 
@@ -78,13 +79,15 @@ export default function checklistSyntax($elem, post)
     {
       $(val).click(function(ev)
       {
-        var elem = $(ev.currentTarget),
-            user = User.currentProp("username");
+        var elem = $(ev.currentTarget);
 
         if(event.altKey)
         {
-          var user = prompt("Enter a valid username",user);
-          var new_value = "[*] @" + user;
+          var prompt = prompt("Enter a valid username",user);
+          if (prompt == false) 
+          { return; }
+          else
+          { var new_value = "[*] @" + prompt; }
         }
         else
         {
