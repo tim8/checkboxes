@@ -60,8 +60,7 @@ export default function checklistSyntax($elem, post)
 {
 
   var boxes = $elem.find(".chcklst-box"),
-      viewPost = post.getModel(),
-      user = User.currentProp("username");
+      viewPost = post.getModel();
 
   if (!viewPost.can_edit) { return; }
 
@@ -69,8 +68,7 @@ export default function checklistSyntax($elem, post)
     {
       $(val).click(function(ev)
       {
-        var elem = $(ev.currentTarget),
-          new_value = elem.hasClass("checked") ? "[ ] #VolunteerNeeded": "[*] @" + user;
+        var elem = $(ev.currentTarget);
 
         if(elem.hasClass("checked"))
         {
@@ -79,7 +77,11 @@ export default function checklistSyntax($elem, post)
         }else if(event.altKey)
         {
           var user = prompt("Enter a valid username");
+        }else{
+          var user = User.currentProp("username");
         }
+        
+        var new_value = elem.hasClass("checked") ? "[ ] #VolunteerNeeded": "[*] @" + user;
 
         elem.after('<i class="fa fa-spinner fa-spin"></i>');
         elem.hide();
