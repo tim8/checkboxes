@@ -19,7 +19,7 @@ function priorToApi(container)
          var elem = $(ev.currentTarget),
               user = User.currentProp("username");
 
-          if(event.altKey)
+          if(ev.altKey)
           {
             var user = prompt("Enter a valid username",user);
             if (user == false) { return; }
