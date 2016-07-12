@@ -71,7 +71,7 @@ export default function checklistSyntax($elem, post)
 }
 
 export default {
-  name: 'checklist',
+  name: 'checkboxes',
   initialize: function(container)
   {
     withPluginApi('0.1', api => initializePlugin(api));

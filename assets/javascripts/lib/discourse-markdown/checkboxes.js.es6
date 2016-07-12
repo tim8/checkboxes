@@ -1,5 +1,9 @@
 import { registerOption } from 'pretty-text/pretty-text';
 
+registerOption((siteSettings, opts) => {
+  opts.features['checkboxes'] = true;
+});
+
 function replaceChecklist(text) {
   text = text || "";
   text = text.replace(/\[\s?\]/ig, '<span class="chcklst-box fa fa-square-o"></span>');
