@@ -15,6 +15,13 @@ function replaceCheckboxes(text) {
   return text;
 }
 
+function replaceFontColor (text) {
+  while (text != (text = text.replace(/\[color=([^\]]+)\]((?:(?!\[color=[^\]]+\]|\[\/color\])[\S\s])*)\[\/color\]/ig, function (match, p1, p2, offset, string) {
+    return "<font color='" + p1 + "'>" + p2 + "</font>";
+  })));
+  return text;
+}
+
 export function setup(helper) {
   helper.inlineBetween({
     between: "--",
@@ -27,6 +34,17 @@ export function setup(helper) {
                      'span.chcklst-box fa fa-square',
                      'span.chcklst-box fa fa-minus-square-o',
                      'span.chcklst-box checked fa fa-check-square',
-                     'span.chcklst-box checked fa fa-check-square-o' ]);
+                     'span.chcklst-box checked fa fa-check-square-o',
+                     'i.fa',
+                     'font color' ]);
   helper.addPreProcessor(replaceCheckboxes);
+
+  helper.inlineRegexp({
+    start: '[fa:',
+    matcher: /^\[fa:([a-z-]+)\]/,
+    emitter: function(contents) {
+      var icon = contents[1];
+      return ['i', {class: 'fa fa-' + icon} ];
+    }
+  });
 }
