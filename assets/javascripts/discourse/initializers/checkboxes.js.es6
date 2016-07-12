@@ -4,10 +4,15 @@ import TextLib from 'discourse/lib/text';
 
 function initializePlugin(api)
 {
-    api.decorateCooked(checklistSyntax);
+  const siteSettings = api.container.lookup('site-settings:main');
+
+  if (siteSettings.checkboxes_enabled)
+  {
+    api.decorateCooked(checkboxesSyntax);
+  }
 }
 
-export default function checklistSyntax($elem, post)
+export default function checkboxesSyntax($elem, post)
 {
   if (!post) { return; }
 

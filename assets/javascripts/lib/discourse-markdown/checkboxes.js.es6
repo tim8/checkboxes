@@ -1,4 +1,10 @@
-function replaceChecklist(text) {
+import { registerOption } from 'pretty-text/pretty-text';
+
+registerOption((siteSettings, opts) => {
+  opts.features['checkboxes'] = !!siteSettings.checkboxes_enabled;
+});
+
+function replaceCheckboxes(text) {
   text = text || "";
   text = text.replace(/\[\s?\]/ig, '<span class="chcklst-box fa fa-square-o"></span>');
   text = text.replace(/\[_\]/ig, '<span class="chcklst-box fa fa-square"></span>');
@@ -22,5 +28,5 @@ export function setup(helper) {
                      'span.chcklst-box fa fa-minus-square-o',
                      'span.chcklst-box checked fa fa-check-square',
                      'span.chcklst-box checked fa fa-check-square-o' ]);
-  helper.addPreProcessor(replaceChecklist);
+  helper.addPreProcessor(replaceCheckboxes);
 }
