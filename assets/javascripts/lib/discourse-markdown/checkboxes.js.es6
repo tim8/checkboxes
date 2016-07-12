@@ -1,7 +1,7 @@
 import { registerOption } from 'pretty-text/pretty-text';
 
 registerOption((siteSettings, opts) => {
-  opts.features['Checklist'] = true;
+  opts.features['checklist'] = true;
 });
 
 function replaceChecklist(text) {
