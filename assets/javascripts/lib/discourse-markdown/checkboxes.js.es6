@@ -51,7 +51,7 @@ export function setup(helper) {
   });
   helper.inlineRegexp({
     start: '[vr:',
-    matcher: /^\[vr:([a-z-]+)\]/,
+    matcher: /^\[vr:([0-9a-z-]+)\]/,
     emitter: function(contents) {
       var icon = contents[1];
       return ["i", {"class": "vri-" + icon} ];
