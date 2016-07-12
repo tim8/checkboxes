@@ -35,7 +35,8 @@ export function setup(helper) {
                      'span.chcklst-box fa fa-minus-square-o',
                      'span.chcklst-box checked fa fa-check-square',
                      'span.chcklst-box checked fa fa-check-square-o',
-                     'i.fa fa-*',
+                     'i.fa fa-*'
+                     'i ' + /fa fa-[a-z-]+/,
                      'font color' ]);
   helper.addPreProcessor(replaceCheckboxes,replaceFontColor);
 
@@ -44,7 +45,7 @@ export function setup(helper) {
     matcher: /^\[fa:([a-z-]+)\]/,
     emitter: function(contents) {
       var icon = contents[1];
-      return ['i', {class: 'fa fa-' + icon} ];
+      return ["i", {"class": "fa fa-" + icon} ];
     }
   });
 }
