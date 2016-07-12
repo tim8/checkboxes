@@ -11,5 +11,5 @@ export function setup(helper) {
 	  })));
 	  return text;
 	}
-	helper.whiteList([ 'font.color']);
+	helper.whiteList([ 'font color']);
 }
