@@ -35,9 +35,8 @@ export function setup(helper) {
                      'span.chcklst-box fa fa-minus-square-o',
                      'span.chcklst-box checked fa fa-check-square',
                      'span.chcklst-box checked fa fa-check-square-o',
-                     'i.fa fa-*'
-                     'i ' + /fa fa-[a-z-]+/,
-                     'font color' ]);
+                     'i[class]',
+                     'font[color]' ]);
   helper.addPreProcessor(replaceCheckboxes,replaceFontColor);
 
   helper.inlineRegexp({
