@@ -38,14 +38,23 @@ export function setup(helper) {
                      'span.chcklst-box checked fa fa-check-square-o',
                      'i[class]',
                      'font[color]' ]);
-  helper.addPreProcessor([replaceCheckboxes,replaceFontColor]);
-
+  helper.addPreProcessor(replaceCheckboxes);
+  helper.addPreProcessor(replaceFontColor);
+  
   helper.inlineRegexp({
     start: '[fa:',
     matcher: /^\[fa:([a-z-]+)\]/,
     emitter: function(contents) {
       var icon = contents[1];
       return ["i", {"class": "fa fa-" + icon} ];
+    }
+  });
+  helper.inlineRegexp({
+    start: '[vr:',
+    matcher: /^\[vr:([a-z-]+)\]/,
+    emitter: function(contents) {
+      var icon = contents[1];
+      return ["i", {"class": "vri-" + icon} ];
     }
   });
 }
