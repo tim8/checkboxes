@@ -5,7 +5,7 @@ registerOption((siteSettings, opts) => {
 });
 
 
-function fontawesome(helper) {
+function makeAwesom(helper) {
   helper.inlineRegexp({
     start: '[fa:',
     matcher: /^\[fa:([a-z-]+)\]/,
@@ -15,6 +15,7 @@ function fontawesome(helper) {
 	}
   });
 }
-helper.whiteList(['i.fa']);
-helper.addPreProcessor(fontawesome);
+export function setup(helper) {
+	helper.whiteList(['i.fa']);
+	helper.addPreProcessor(makeAwesom);
 }
