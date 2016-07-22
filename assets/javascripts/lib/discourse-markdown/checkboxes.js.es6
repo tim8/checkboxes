@@ -64,9 +64,15 @@ export function setup(helper) {
     start: '[sound:',
     matcher: /^\[sound:(\d[xX])?\:?([0-9]+)?\]/,
     emitter: function(contents) {
-      var bpo = contents[1].toUpperCase() + ' ',
-          total = '(' + contents[2] + ' pts)';
-      return '<i class="vri-tv-v"></i> <font color="red"><strong>' + bpo + total + '</strong></font>';
+      var result = '<i class="vri-tv-v"></i> <font color="red"><strong>';
+      if(contents[1]){
+        result += contents[1].toUpperCase() + ' ';  
+      }
+      if(contents[2]){
+        result += '(' + contents[2] + ' pts)';
+      }
+     
+      return  result + '</strong></font>';
     }
   });
 
