@@ -71,7 +71,9 @@ export function setup(helper) {
       if(contents[2]){
         result += '(' + contents[2] + ' pts)';
       }
-      return  result + '</strong></font>';
+      if(contents[1] || contents[2]){
+        return  result + '</strong></font>';
+      }
     }
   });
 
