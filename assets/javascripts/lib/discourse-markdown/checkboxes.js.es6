@@ -64,7 +64,6 @@ export function setup(helper) {
     start: '[sound:',
     matcher: /^\[sound:(\d\d?[xX])?\:?([0-9]+)?\]/,
     emitter: function(contents) {
-      if(!contents[1]){return;}
       var result = '<i class="vri-tv-v"></i> <font color="red"><strong>';
       if(contents[1]){
         result += contents[1].toUpperCase() + ' ';  
