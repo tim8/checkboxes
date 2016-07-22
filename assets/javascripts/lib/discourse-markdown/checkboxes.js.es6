@@ -62,12 +62,11 @@ export function setup(helper) {
 
   helper.inlineRegexp({
     start: '[sound:',
-    matcher: /^\[sound:([0-9xX]+):([0-9]+)\]/,
+    matcher: /^\[sound:([0-9xX]+)?\:?([0-9]+)?\]/,
     emitter: function(contents) {
-      var bpo = contents[1],
-          total = contents[2];
-
-      return '<i class="vri-tv-v"></i> <font color="red"><strong>' + bpo + ' (' +  total + ' pts)</strong></font>';
+      var bpo = contents[1].toUpperCase() + ' ',
+          total = '(' + contents[2] + ' pts)';
+      return '<i class="vri-tv-v"></i> <font color="red"><strong>' + bpo + total + '</strong></font>';
     }
   });
 
