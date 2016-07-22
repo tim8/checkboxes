@@ -15,14 +15,6 @@ function replaceCheckboxes(text) {
   return text;
 }
 
-function replaceFontColor (text) {
-  while (text != (text = text.replace(/\[color=([^\]]+)\]((?:(?!\[color=[^\]]+\]|\[\/color\])[\S\s])*)\[\/color\]/ig, function (match, p1, p2, offset, string) 
-  {
-    return "<font color='" + p1 + "'>" + p2 + "</font>";
-  })));
-  return text;
-}
-
 
 export function setup(helper) {
   helper.inlineBetween({
@@ -31,16 +23,16 @@ export function setup(helper) {
       return ["span", {"class": "chcklst-stroked"}].concat(contents);
     }
   });
-  helper.whiteList([ 'span.chcklst-stroked',
-                     'span.chcklst-box fa fa-square-o',
-                     'span.chcklst-box fa fa-square',
-                     'span.chcklst-box fa fa-minus-square-o',
-                     'span.chcklst-box checked fa fa-check-square',
-                     'span.chcklst-box checked fa fa-check-square-o',
-                     'i[class]',
-                     'font[color]' ]);
+  helper.whiteList([ 
+    'span.chcklst-stroked',
+    'span.chcklst-box fa fa-square-o',
+    'span.chcklst-box fa fa-square',
+    'span.chcklst-box fa fa-minus-square-o',
+    'span.chcklst-box checked fa fa-check-square',
+    'span.chcklst-box checked fa fa-check-square-o',
+    'i[class]'
+  ]);
   helper.addPreProcessor(replaceCheckboxes);
-  helper.addPreProcessor(replaceFontColor);
   
   helper.inlineRegexp({
     start: '[fa:',
