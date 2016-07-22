@@ -62,7 +62,7 @@ export function setup(helper) {
 
   helper.inlineRegexp({
     start: '[sound:',
-    matcher: /^\[sound:([0-9xX]+)?\:?([0-9]+)?\]/,
+    matcher: /^\[sound:(\d[xX])?\:?([0-9]+)?\]/,
     emitter: function(contents) {
       var bpo = contents[1].toUpperCase() + ' ',
           total = '(' + contents[2] + ' pts)';
