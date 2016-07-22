@@ -56,18 +56,18 @@ export function setup(helper) {
     matcher: /^\[trivia:([0-9]+)\]/,
     emitter: function(contents) {
       var points = contents[1];
-      return '<i class="vri-live"></i><font color="orange"><strong>VL (+' + points + ' pts)</strong></font>';
+      return '<i class="vri-live"></i> <font color="orange"><strong>VL (+' + points + ' pts)</strong></font>';
     }
   });
 
   helper.inlineRegexp({
     start: '[sound:',
-    matcher: /^\[sound:([0-9]+):([0-9]+)\]/,
+    matcher: /^\[sound:([0-9xX]+):([0-9]+)\]/,
     emitter: function(contents) {
       var bpo = contents[1],
           total = contents[2];
 
-      return '<i class="vri-tv-v"></i><font color="red"><strong>' + bpo + ' (' +  total + ' pts)</strong></font>';
+      return '<i class="vri-tv-v"></i> <font color="red"><strong>' + bpo + ' (' +  total + ' pts)</strong></font>';
     }
   });
 
