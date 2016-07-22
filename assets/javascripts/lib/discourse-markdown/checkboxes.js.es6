@@ -23,6 +23,7 @@ function replaceFontColor (text) {
   return text;
 }
 
+
 export function setup(helper) {
   helper.inlineBetween({
     between: "--",
@@ -57,4 +58,25 @@ export function setup(helper) {
       return ["i", {"class": "vri-" + icon} ];
     }
   });
+
+  helper.inlineRegexp({
+    start: '[trivia:',
+    matcher: /^\[trivia:([0-9]+)\]/,
+    emitter: function(contents) {
+      var points = contents[1];
+      return '<i class="vri-live"></i><font color="orange"><strong>VL (+' + points + ' pts)</strong></font>';
+    }
+  });
+
+  helper.inlineRegexp({
+    start: '[sound:',
+    matcher: /^\[sound:([0-9]+):([0-9]+)\]/,
+    emitter: function(contents) {
+      var bpo = contents[1],
+          total = contents[2];
+
+      return '<i class="vri-tv-v"></i><font color="red"><strong>' + bpo + ' (' +  total + ' pts)</strong></font>';
+    }
+  });
+
 }
