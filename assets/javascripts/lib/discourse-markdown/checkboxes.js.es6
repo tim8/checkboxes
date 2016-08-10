@@ -30,18 +30,8 @@ export function setup(helper) {
     'span.chcklst-box fa fa-minus-square-o',
     'span.chcklst-box checked fa fa-check-square',
     'span.chcklst-box checked fa fa-check-square-o',
-    'i[class]',
-    'button[volunteer=sound]',
-    'button[volunteer=trivia]',
-    'button.btn btn-small volunteer-button'
+    'i[class]'
   ]);
-  helper.whiteList({
-    custom(tag, name, value) {
-      if (tag === 'button' && name === 'show') {
-        return /^[a-zA-Z]{2}\d{12}/.exec(value);
-      }
-    }
-  });
   helper.addPreProcessor(replaceCheckboxes);
   
   helper.inlineRegexp({
