@@ -15,6 +15,21 @@ function replaceCheckboxes(text) {
   return text;
 }
 
+function replaceFontColor(text) {
+  text = text || "";
+  while (text !== (text = text.replace(/\[color=([^\]]+)\]((?:(?!\[color=[^\]]+\]|\[\/color\])[\S\s])*)\[\/color\]/ig, function (match, p1, p2) {
+    return `<font color='${p1}'>${p2}</font>`;
+  })));
+  return text;
+}
+
+function replaceFontBgColor(text) {
+  text = text || "";
+  while (text !== (text = text.replace(/\[bgcolor=([^\]]+)\]((?:(?!\[bgcolor=[^\]]+\]|\[\/bgcolor\])[\S\s])*)\[\/bgcolor\]/ig, function (match, p1, p2) {
+    return `<span style='background-color:${p1}'>${p2}</span>`;
+  })));
+  return text;
+}
 
 export function setup(helper) {
   helper.inlineBetween({
@@ -30,8 +45,19 @@ export function setup(helper) {
     'span.chcklst-box fa fa-minus-square-o',
     'span.chcklst-box checked fa fa-check-square',
     'span.chcklst-box checked fa fa-check-square-o',
-    'i[class]'
+    'i[class]',
+    'font[color]'
   ]);
+  helper.whiteList({
+    custom(tag, name, value) {
+      if (tag === 'span' && name === 'style') {
+        return /^background-color:.*$/.exec(value);
+      }
+    }
+  });
+
+  helper.addPreProcessor(text => replaceFontColor(text));
+  helper.addPreProcessor(text => replaceFontBgColor(text));
   helper.addPreProcessor(replaceCheckboxes);
   
   helper.inlineRegexp({
