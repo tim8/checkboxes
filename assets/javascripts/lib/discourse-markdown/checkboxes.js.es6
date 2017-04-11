@@ -87,7 +87,7 @@ export function setup(helper) {
   });*/
   helper.inlineRegexp({
     start: '[trivia:',
-    matcher: /^\[trivia(?:(.*?))?\](.*?)\[\/trivia\]/,
+    matcher: /^\[trivia(?:\:(.*?))?\](.*?)\[\/trivia\]/,
     emitter: function(contents) {
       if(contents[1]){
         return '<i class="vri-live"></i> <a href="//vigglerumors.com/trivia/' + contents[1] + '"><font color="orange"><strong>' + contents[2] + '</strong></font> <i class="fa fa-external-link"></i></a>';  
@@ -101,6 +101,7 @@ export function setup(helper) {
     start: '[sound:',
     matcher: /^\[sound:(\d\d?[xX])?\:?([0-9]+)?\]/,
     emitter: function(contents) {
+      console.log(parseInt(contents[1]));
       if(parseInt(contents[1]) > 2){
         var color = 'orange';
       }else{
