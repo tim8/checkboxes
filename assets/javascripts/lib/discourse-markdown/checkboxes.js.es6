@@ -101,7 +101,7 @@ export function setup(helper) {
     start: '[sound:',
     matcher: /^\[sound:(\d\d?[xX])?\:?([0-9]+)?\]/,
     emitter: function(contents) {
-      if(contents[1].replace( /^\D+/g, '') > 2){
+      if(parseInt(contents[1]) > 2){
         var color = 'orange';
       }else{
         var color = 'gray';
