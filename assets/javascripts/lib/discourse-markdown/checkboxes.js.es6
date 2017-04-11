@@ -77,12 +77,23 @@ export function setup(helper) {
     }
   });
 
-  helper.inlineRegexp({
+/*  helper.inlineRegexp({
     start: '[trivia:',
     matcher: /^\[trivia:([0-9]+)\]/,
     emitter: function(contents) {
       var points = contents[1];
       return '<i class="vri-live"></i> <font color="orange"><strong>VL (+' + points + ' pts)</strong></font>';
+    }
+  });*/
+  helper.inlineRegexp({
+    start: '[trivia:',
+    matcher: /^\[trivia(:(.*?))?\](.*?)\[\/trivia\]/,
+    emitter: function(contents) {
+      if(contents[1]){
+        return '<i class="vri-live"></i> <a href="//vigglerumors.com/trivia/' + contents[1] + '"><font color="orange"><strong>' + contents[2] + '</strong></font> <i class="fa fa-external-link"></i></a>';  
+      }else{
+        return '<i class="vri-live"></i> <font color="orange"><strong>' + contents[2] + '</strong></font>';  
+      }
     }
   });
 
@@ -90,7 +101,13 @@ export function setup(helper) {
     start: '[sound:',
     matcher: /^\[sound:(\d\d?[xX])?\:?([0-9]+)?\]/,
     emitter: function(contents) {
-      var result = '<i class="vri-tv-v"></i> <font color="red"><strong>';
+      if(contents[1].replace( /^\D+/g, '') > 2){
+        var color = 'orange';
+      }else{
+        var color = 'gray';
+      }
+
+      var result = '<i class="vri-tv-v"></i> <font color="' + color + '"><strong>';
       if(contents[1]){
         result += contents[1].toUpperCase() + ' ';  
       }
