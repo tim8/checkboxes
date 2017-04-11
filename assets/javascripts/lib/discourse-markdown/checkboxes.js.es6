@@ -89,11 +89,11 @@ export function setup(helper) {
     start: '[trivia',
     matcher: /^\[trivia(?:\:(.*?))?\](.*?)\[\/trivia\]/,
     emitter: function(contents) {
-      if(contents[2] ){
+      if(contents[1] ){
         return '<i class="vri-live"></i> <a href="//vigglerumors.com/trivia/' + contents[1] + '"><font color="orange"><strong>' + contents[2] + '</strong></font> <i class="fa fa-external-link"></i></a>';  
       }
 
-      return '<i class="vri-live"></i> <font color="orange"><strong>' + contents[1] + '</strong></font>';
+      return '<i class="vri-live"></i> <font color="orange"><strong>' + contents[2] + '</strong></font>';
 
     }
   });
