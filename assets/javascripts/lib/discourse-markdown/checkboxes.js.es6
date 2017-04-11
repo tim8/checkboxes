@@ -92,6 +92,7 @@ export function setup(helper) {
       if(contents[2] ){
         return '<i class="vri-live"></i> <a href="//vigglerumors.com/trivia/' + contents[1] + '"><font color="orange"><strong>' + contents[2] + '</strong></font> <i class="fa fa-external-link"></i></a>';  
       }
+      console.log(contents);
       return '<i class="vri-live"></i> <font color="orange"><strong>' + contents[1] + '</strong></font>';
 
     }
