@@ -12,7 +12,7 @@ function initializePlugin(api)
   }
 }
 
-export default function checkboxesSyntax($elem, post)
+export function checkboxesSyntax($elem, post)
 {
   if (!post) { return; }
 
