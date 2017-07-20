@@ -36,7 +36,7 @@ export function checkboxesSyntax($elem, post)
           else if (user == "live")
             { var new_value = "[x] [live.vigglerumors.com](http://live.vigglerumors.com)" }
           else
-          { var new_value = "[*] @" + user; }
+          { var new_value = "[\\*] @" + user; }
         }
         else
         {
@@ -45,7 +45,7 @@ export function checkboxesSyntax($elem, post)
             var remove =  confirm("Are you sure you want to un-volunteer?");
             if (remove == false) { return; }
           }
-          var new_value = elem.hasClass("checked") ? "[ ] #VolunteerNeeded": "[*] @" + user;
+          var new_value = elem.hasClass("checked") ? "[ ] #VolunteerNeeded": "[\\*] @" + user;
         }
 
       elem.after('<i class="fa fa-spinner fa-spin"></i>');
@@ -55,18 +55,27 @@ export function checkboxesSyntax($elem, post)
       AjaxLib.ajax("/posts/" + postId, { type: 'GET', cache: false }).then(function(result)
       {
         var nth = -1, // make the first run go to index = 0
-          new_raw = result.raw.replace(/(\[([x\ \_\-\*]?)\])\s(\[.*\)|((@|#)\w+))?/g, function(match, args, offset)
+          new_raw = result.raw.replace(/(\[([x\ \_\-\\?\*]?)\])\s(\[.*\)|((@|#)\w+))?/g, function(match, args, offset)
           {
             nth += 1;
-            return nth == idx ? new_value : match;
+            return nth === idx ? new_value : match;
           });
 
         var props = {
           raw: new_raw,
           edit_reason: 'volunteered',
-          cooked: TextLib.cook(new_raw).string
         };
-        viewPost.save(props);
+        
+        if (TextLib.cookAsync) {
+          TextLib.cookAsync(new_raw).then(cooked => {
+            props.cooked = cooked.string;
+            viewPost.save(props);
+          });
+        } else {
+          props.cooked = TextLib.cook(new_raw).string;
+          viewPost.save(props);
+        }
+
       });
     });
   });
@@ -77,7 +86,7 @@ export function checkboxesSyntax($elem, post)
 
 export default {
   name: 'checkboxes',
-  initialize: function(container)
+  initialize: function()
   {
     withPluginApi('0.1', api => initializePlugin(api));
   }

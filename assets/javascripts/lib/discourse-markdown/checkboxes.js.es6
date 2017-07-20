@@ -4,15 +4,21 @@ registerOption((siteSettings, opts) => {
   opts.features['checkboxes'] = !!siteSettings.checkboxes_enabled;
 });
 
-function replaceCheckboxes(text) {
-  text = text || "";
-  text = text.replace(/\[\s?\]/ig, '<span class="chcklst-box fa fa-square-o"></span>');
-  text = text.replace(/\[_\]/ig, '<span class="chcklst-box fa fa-square"></span>');
-  text = text.replace(/\[-\]/ig, '<span class="chcklst-box fa fa-minus-square-o"></span>');
-  text = text.replace(/\[x\]/ig, '<span class="chcklst-box checked fa fa-check-square"></span>');
-  text = text.replace(/\[\*\]/ig, '<span class="chcklst-box checked fa fa-check-square-o"></span>');
-  text = text.replace(/!<span class="chcklst-box (checked )?(fa fa-(square-o|square|minus-square-o|check-square|check-square-o))"><\/span>\(/ig, "![](");
-  return text;
+const REGEX = /\[(\s?|_|-|x|\*)\]/ig;
+
+function getClasses(str) {
+  switch(str.toLowerCase()) {
+    case "x":
+      return "checked fa fa-check-square";
+    case "*":
+      return "checked fa fa-check-square-o";
+    case "-":
+      return "fa fa-minus-square-o";
+    case "_":
+      return "fa fa-square";
+    default:
+      return "fa fa-square-o";
+  }
 }
 
 function replaceFontColor(text) {
@@ -31,43 +37,118 @@ function replaceFontBgColor(text) {
   return text;
 }
 
-export function setup(helper) {
-  helper.inlineBetween({
-    between: "--",
-    emitter: function(contents) {
-      return ["span", {"class": "chcklst-stroked"}].concat(contents);
+
+
+function addCheckbox(result, content, match, state) {
+  let classes = getClasses(match[1]);
+  let token = new state.Token('check_open', 'span', 1);
+  token.attrs = [['class', `chcklst-box ${classes}`]];
+  result.push(token);
+
+  token = new state.Token('check_close', 'span', -1);
+  result.push(token);
+}
+
+function applyCheckboxes(content, state) {
+
+  let result = null,
+      pos = 0,
+      match;
+
+  while (match = REGEX.exec(content)) {
+
+    if (match.index > pos) {
+      result = result || [];
+      let token = new state.Token('text', '', 0);
+      token.content = content.slice(pos, match.index);
+      result.push(token);
     }
-  });
-  helper.whiteList([ 
-    'span.chcklst-stroked',
-    'span.chcklst-box fa fa-square-o',
-    'span.chcklst-box fa fa-square',
-    'span.chcklst-box fa fa-minus-square-o',
-    'span.chcklst-box checked fa fa-check-square',
-    'span.chcklst-box checked fa fa-check-square-o',
-    'i[class]',
-    'font[color]'
-  ]);
-  helper.whiteList({
-    custom(tag, name, value) {
-      if (tag === 'span' && name === 'style') {
-        return /^background-color:.*$/.exec(value);
+
+    pos = match.index + match[0].length;
+
+    result = result || [];
+    addCheckbox(result, content, match, state);
+  }
+
+  if (result && pos < content.length) {
+    let token = new state.Token('text', '', 0);
+    token.content = content.slice(pos);
+    result.push(token);
+  }
+
+  return result;
+}
+
+function processChecklist(state) {
+  var i, j, l, tokens, token,
+      blockTokens = state.tokens,
+      nesting = 0;
+
+  for (j = 0, l = blockTokens.length; j < l; j++) {
+    if (blockTokens[j].type !== 'inline') { continue; }
+    tokens = blockTokens[j].children;
+
+    // We scan from the end, to keep position when new tags are added.
+    // Use reversed logic in links start/end match
+    for (i = tokens.length - 1; i >= 0; i--) {
+      token = tokens[i];
+
+      nesting += token.nesting;
+
+      if (token.type === 'text' && nesting === 0) {
+        let processed = applyCheckboxes(token.content, state);
+        if (processed) {
+          blockTokens[j].children = tokens = state.md.utils.arrayReplaceAt(tokens, i, processed);
+        }
       }
     }
+  }
+
+}
+
+
+function setupMarkdownIt(helper) {
+  helper.registerOptions((opts, siteSettings)=>{
+    opts.features['checklist'] = !!siteSettings.checklist_enabled;
   });
 
-  helper.addPreProcessor(text => replaceFontColor(text));
-  helper.addPreProcessor(text => replaceFontBgColor(text));
-  helper.addPreProcessor(replaceCheckboxes);
-  
-  helper.inlineRegexp({
-    start: '[fa:',
-    matcher: /^\[fa:([a-z-]+)\]/,
-    emitter: function(contents) {
-      var icon = contents[1];
-      return ["i", {"class": "fa fa-" + icon} ];
-    }
+  helper.registerPlugin(md =>{
+    md.core.ruler.push('checklist', processChecklist);
+    const ruler = md.inline.bbcode.ruler;
+
+    ruler.push('bgcolor', {
+      tag: 'bgcolor',
+      wrap: function(token, endToken, tagInfo){
+        token.type = 'span_open';
+        token.tag = 'span';
+        token.attrs = [['style', 'background-color:' + tagInfo.attrs._default.trim()]];
+        token.content = '';
+        token.nesting = 1;
+
+        endToken.type = 'span_close';
+        endToken.tag = 'span';
+        endToken.nesting = -1;
+        endToken.content = '';
+      }
+    });
+
+    ruler.push('color', {
+      tag: 'color',
+      wrap: function(token, endToken, tagInfo){
+        token.type = 'font_open';
+        token.tag = 'font';
+        token.attrs = [['color', tagInfo.attrs._default]];
+        token.content = '';
+        token.nesting = 1;
+
+        endToken.type = 'font_close';
+        endToken.tag = 'font';
+        endToken.nesting = -1;
+        endToken.content = '';
+      }
+    });
   });
+
   helper.inlineRegexp({
     start: '[vr:',
     matcher: /^\[vr:([0-9a-z-]+)\]/,
@@ -119,6 +200,35 @@ export function setup(helper) {
       if(contents[1] || contents[2]){
         return  result + '</strong></font>';
       }
+    }
+  });
+}
+
+export function setup(helper) {
+  helper.whiteList([ 
+    'span.chcklst-stroked',
+    'span.chcklst-box fa fa-square-o',
+    'span.chcklst-box fa fa-square',
+    'span.chcklst-box fa fa-minus-square-o',
+    'span.chcklst-box checked fa fa-check-square',
+    'span.chcklst-box checked fa fa-check-square-o',
+    'i[class]',
+    'font[color]'
+  ]);
+  helper.whiteList({
+    custom(tag, name, value) {
+      if (tag === 'span' && name === 'style') {
+        return /^background-color:.*$/.exec(value);
+      }
+    }
+  });
+  setupMarkdownIt(helper);
+  helper.inlineRegexp({
+    start: '[fa:',
+    matcher: /^\[fa:([a-z-]+)\]/,
+    emitter: function(contents) {
+      var icon = contents[1];
+      return ["i", {"class": "fa fa-" + icon} ];
     }
   });
 
